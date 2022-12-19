@@ -6,17 +6,19 @@ import { Task } from "./components/Task";
 
 import "./styles/main.css";
 
+interface TaskTeste {
+  taskName: string;
+  checked: boolean;
+}
+
 export function App() {
-  const [newTask, setNewTask] = useState("");
+  const [quantityChecked, setQuantityChecked] = useState(0);
   const [taskText, setTaskText] = useState("");
-  const [tasks, setTasks] = useState([
-    "Integer urna interdum massa libero auctor neque turpis turpis semper. Duis vel sed fames integer.",
-    "ewqhiuewuiqhiwdhuiqd",
-  ]);
+  const [tasks, setTasks] = useState<TaskTeste[]>([]);
 
   function handleCreateNewTask(event: FormEvent) {
     event.preventDefault();
-    setTasks([...tasks, newTask]);
+    setTasks([...tasks, { taskName: taskText, checked: false }]);
     setTaskText("");
   }
 
@@ -26,10 +28,18 @@ export function App() {
 
   function deleteTask(taskToDelete: string) {
     const taskWithoutDeletedOne = tasks.filter((task) => {
-      return task !== taskToDelete;
+      return task?.taskName !== taskToDelete;
     });
 
     setTasks(taskWithoutDeletedOne);
+  }
+
+  function calculateChecks(checkedOrNot: boolean) {
+    if (checkedOrNot === true) {
+      setQuantityChecked((prevState) => prevState + 1);
+    } else {
+      setQuantityChecked((prevState) => prevState - 1);
+    }
   }
 
   return (
@@ -48,7 +58,7 @@ export function App() {
               type="text"
               placeholder="Adicione uma nova tarefa"
               onChange={(event: any) => {
-                setNewTask(event.target.value);
+                setTaskText(event.target.value);
                 handleNewTaskChange(event);
               }}
               value={taskText}
@@ -80,15 +90,20 @@ export function App() {
             <h6 className="text-purple-500 font-bold text-sm">
               Concluídas
               <span className="bg-gray-500 text-gray-100 px-2 py-[2px] rounded-full ml-2">
-                2 de {tasks.length}
+                {quantityChecked} de {tasks.length}
               </span>
             </h6>
           </div>
 
           <div className="flex flex-col gap-3">
-            {tasks.map((task: string | any) => {
+            {tasks.map((task: any) => {
               return (
-                <Task taskTitle={task} key={task} onDeleteTask={deleteTask} />
+                <Task
+                  taskTitle={task.taskName}
+                  key={task.taskName}
+                  onDeleteTask={deleteTask}
+                  onCalculateChecks={calculateChecks}
+                />
               );
             })}
           </div>

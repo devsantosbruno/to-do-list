@@ -5,6 +5,7 @@ import { useState } from "react";
 interface TaskProps {
   taskTitle: string;
   onDeleteTask: (task: string) => void;
+  onCalculateChecks: any;
 }
 
 export function Task(props: TaskProps) {
@@ -12,6 +13,10 @@ export function Task(props: TaskProps) {
 
   function handleDeleteTask() {
     props.onDeleteTask(props.taskTitle);
+  }
+
+  function handleCalculateCheck(checkedOrNot: boolean) {
+    props.onCalculateChecks(checkedOrNot);
   }
 
   return (
@@ -23,6 +28,7 @@ export function Task(props: TaskProps) {
           } w-5 h-5 rounded-full flex items-center justify-center shadow-lg`}
           onClick={() => {
             setChecked(!checked);
+            handleCalculateCheck(!checked);
           }}
         >
           <Checkbox.Indicator className="text-purple-500">
