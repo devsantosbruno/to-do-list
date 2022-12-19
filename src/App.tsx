@@ -1,20 +1,58 @@
 import { PlusCircle } from "phosphor-react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import logoImage from "./assets/logo.svg";
+
 import { Task } from "./components/Task";
 
 import "./styles/main.css";
 
 export function App() {
+  const [newTask, setNewTask] = useState("");
+  const [taskText, setTaskText] = useState("");
+  const [tasks, setTasks] = useState([
+    "Integer urna interdum massa libero auctor neque turpis turpis semper. Duis vel sed fames integer.",
+    "ewqhiuewuiqhiwdhuiqd",
+  ]);
+
+  function handleCreateNewTask(event: FormEvent) {
+    event.preventDefault();
+    setTasks([...tasks, newTask]);
+    setTaskText("");
+  }
+
+  function handleNewTaskChange(event: ChangeEvent<HTMLTextAreaElement>) {
+    setTaskText(event.target.value);
+  }
+
+  function deleteTask(taskToDelete: string) {
+    const taskWithoutDeletedOne = tasks.filter((task) => {
+      return task !== taskToDelete;
+    });
+
+    setTasks(taskWithoutDeletedOne);
+  }
+
   return (
     <div className="bg-gray-600 min-h-screen">
       <header className="bg-gray-700 pt-16">
         <div className="max-w-3xl px-4 mx-auto">
           <img src={logoImage} alt="" className="mx-auto" />
 
-          <form action="" className="flex gap-4 relative -bottom-7">
+          <form
+            onSubmit={(event) => {
+              handleCreateNewTask(event);
+            }}
+            className="flex gap-2 relative -bottom-7"
+          >
             <input
               type="text"
               placeholder="Adicione uma nova tarefa"
+              onChange={(event: any) => {
+                setNewTask(event.target.value);
+                handleNewTaskChange(event);
+              }}
+              value={taskText}
+              required
               className="w-full rounded-lg p-4 bg-gray-500 border-[1px] border-gray-700 placeholder:text-gray-300 text-gray-100 outline-none shadow-lg"
             />
 
@@ -35,21 +73,24 @@ export function App() {
             <h6 className="text-blue-300 font-bold text-sm">
               Tarefas criadas
               <span className="bg-gray-500 text-gray-100 px-2 py-[2px] rounded-full ml-2">
-                5
+                {tasks.length}
               </span>
             </h6>
 
             <h6 className="text-purple-500 font-bold text-sm">
               Concluídas
               <span className="bg-gray-500 text-gray-100 px-2 py-[2px] rounded-full ml-2">
-                2 de 5
+                2 de {tasks.length}
               </span>
             </h6>
           </div>
 
           <div className="flex flex-col gap-3">
-            <Task />
-            <Task />
+            {tasks.map((task: string | any) => {
+              return (
+                <Task taskTitle={task} key={task} onDeleteTask={deleteTask} />
+              );
+            })}
           </div>
         </div>
       </main>
