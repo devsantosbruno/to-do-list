@@ -1,6 +1,7 @@
 import { PlusCircle } from "phosphor-react";
 import { ChangeEvent, FormEvent, useState } from "react";
 import logoImage from "./assets/logo.svg";
+import { Empty } from "./components/Empty";
 
 import { Task } from "./components/Task";
 
@@ -107,16 +108,20 @@ export function App() {
           </div>
 
           <div className="flex flex-col gap-3">
-            {tasks.map((task: TaskTeste) => {
-              return (
-                <Task
-                  taskTitle={task.taskName}
-                  key={task.taskName}
-                  onDeleteTask={deleteTask}
-                  onCalculateChecks={calculateChecks}
-                />
-              );
-            })}
+            {tasks.length <= 0 ? (
+              <Empty />
+            ) : (
+              tasks.map((task: TaskTeste) => {
+                return (
+                  <Task
+                    taskTitle={task.taskName}
+                    key={task.taskName}
+                    onDeleteTask={deleteTask}
+                    onCalculateChecks={calculateChecks}
+                  />
+                );
+              })
+            )}
           </div>
         </div>
       </main>
