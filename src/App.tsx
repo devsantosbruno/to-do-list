@@ -28,13 +28,24 @@ export function App() {
 
   function deleteTask(taskToDelete: string) {
     const taskWithoutDeletedOne = tasks.filter((task) => {
+      if (task.taskName === taskToDelete) {
+        if (task.checked === true) {
+          setQuantityChecked((prevState) => prevState - 1);
+        }
+      }
       return task?.taskName !== taskToDelete;
     });
 
     setTasks(taskWithoutDeletedOne);
   }
 
-  function calculateChecks(checkedOrNot: boolean) {
+  function calculateChecks(taskTitle: any, checkedOrNot: boolean) {
+    tasks.map((task) => {
+      if (task.taskName === taskTitle) {
+        task.checked = checkedOrNot;
+      }
+    });
+
     if (checkedOrNot === true) {
       setQuantityChecked((prevState) => prevState + 1);
     } else {

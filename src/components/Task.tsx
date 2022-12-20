@@ -16,7 +16,7 @@ export function Task(props: TaskProps) {
   }
 
   function handleCalculateCheck(checkedOrNot: boolean) {
-    props.onCalculateChecks(checkedOrNot);
+    props.onCalculateChecks(props.taskTitle, checkedOrNot);
   }
 
   return (
