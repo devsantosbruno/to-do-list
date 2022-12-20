@@ -39,7 +39,7 @@ export function App() {
     setTasks(taskWithoutDeletedOne);
   }
 
-  function calculateChecks(taskTitle: any, checkedOrNot: boolean) {
+  function calculateChecks(taskTitle: string, checkedOrNot: boolean) {
     tasks.map((task) => {
       if (task.taskName === taskTitle) {
         task.checked = checkedOrNot;
@@ -107,7 +107,7 @@ export function App() {
           </div>
 
           <div className="flex flex-col gap-3">
-            {tasks.map((task: any) => {
+            {tasks.map((task: TaskTeste) => {
               return (
                 <Task
                   taskTitle={task.taskName}

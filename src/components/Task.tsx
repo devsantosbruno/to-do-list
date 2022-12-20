@@ -5,7 +5,7 @@ import { useState } from "react";
 interface TaskProps {
   taskTitle: string;
   onDeleteTask: (task: string) => void;
-  onCalculateChecks: any;
+  onCalculateChecks: Function;
 }
 
 export function Task(props: TaskProps) {
